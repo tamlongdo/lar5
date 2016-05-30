@@ -15,19 +15,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', [
-    'as' => 'admin.home', 
-    'middleware' => 'admin.auth', 
-    'uses' => 'Admin\HomeController@index'
-]);
-Route::get('admin/logout', [
-    'as' => 'admin.logout', 
-    'uses' => 'Admin\AuthController@logout'
-]);
+Route::group(['prefix' => 'admin', 'middleware' => 'admin.auth'], function () {
+    Route::get('/', [
+        'as' => 'admin.home',
+        'middleware' => 'admin.auth',
+        'uses' => 'Admin\HomeController@index'
+    ]);
+    
+    Route::get('logout', [
+        'as' => 'admin.logout',
+        'uses' => 'Admin\AuthController@logout'
+    ]);
+});
 
 Route::match(['get', 'post'], 'admin/login', [
     'as'  => 'admin.login',
     'uses' => 'Admin\AuthController@login'
 ]);
+
 // Registration routes...
 Route::get('admin/register', 'Admin\AuthController@register');
+
+Route::get('auth/facebook', [
+    'as' => 'auth.facebook',
+    'uses' => 'Auth\AuthController@redirectToProvider'
+]);
+Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback');
