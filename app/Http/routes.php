@@ -17,3 +17,8 @@ Route::get('/', function () {
 
 Route::get('admin/', ['as' => 'admin.home', 'uses' => 'Admin\HomeController@index']);
 Route::get('admin/login', ['as' => 'admin.login', 'uses' => 'Admin\AuthController@login']);
+Route::post('admin/login', ['as' => 'admin.authenticate', 'uses' => 'Admin\AuthController@authenticate']);
+Route::get('admin/logout', ['as' => 'admin.logout', 'uses' => 'Admin\AuthController@logout']);
+
+// Registration routes...
+Route::get('admin/register', 'Admin\AuthController@register');
