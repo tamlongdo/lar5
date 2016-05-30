@@ -15,10 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin/', ['as' => 'admin.home', 'uses' => 'Admin\HomeController@index']);
-Route::get('admin/login', ['as' => 'admin.login', 'uses' => 'Admin\AuthController@login']);
-Route::post('admin/login', ['as' => 'admin.authenticate', 'uses' => 'Admin\AuthController@authenticate']);
-Route::get('admin/logout', ['as' => 'admin.logout', 'uses' => 'Admin\AuthController@logout']);
+Route::get('admin', [
+    'as' => 'admin.home', 
+    'middleware' => 'admin.auth', 
+    'uses' => 'Admin\HomeController@index'
+]);
+Route::get('admin/logout', [
+    'as' => 'admin.logout', 
+    'uses' => 'Admin\AuthController@logout'
+]);
 
+Route::match(['get', 'post'], 'admin/login', [
+    'as'  => 'admin.login',
+    'uses' => 'Admin\AuthController@login'
+]);
 // Registration routes...
 Route::get('admin/register', 'Admin\AuthController@register');

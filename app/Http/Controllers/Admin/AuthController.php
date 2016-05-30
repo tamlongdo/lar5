@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 class AuthController extends Controller{
     
     public function register(Request $request) {
@@ -30,11 +31,37 @@ class AuthController extends Controller{
         }
     }
     
-    public function login()
+    /**
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function login(Request $request)
     {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'email'     => 'required|email',
+                'password'  => 'required',
+            ]);
+            
+            if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]))
+            {
+                return redirect()->route('admin.home');
+            }
+            else
+            {
+                session()->flash('msg','Username or password was invalid!');
+                return redirect()->route('admin.login')->withInput();
+            }
+        }
         return view('back.auth.login');
     }
     
+    /**
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout() {
         Auth::logout();
     

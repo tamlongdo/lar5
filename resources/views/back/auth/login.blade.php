@@ -27,20 +27,32 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="{{route('admin.home')}}"><b>Admin</b>LTE</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+     @if(Session::has('msg'))
+        {{Session::get('msg')}}
+     @endif
 
     <form action="" method="post">
-      <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+      {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="email" placeholder="Email">
+        <input type="text" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="password" placeholder="Password">
+        <input type="password" class="form-control" name="password" placeholder="Password" value="">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
