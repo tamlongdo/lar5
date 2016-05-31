@@ -40,12 +40,14 @@ class AuthController extends Controller{
     {
         if ($request->isMethod('post'))
         {
+            $remember = ($request->has('remember')) ? true : false;
             $this->validate($request, [
                 'email'     => 'required|email',
                 'password'  => 'required',
+                'remember'  =>  ''
             ]);
             
-            if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]))
+            if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember))
             {
                 return redirect()->route('admin.home');
             }

@@ -36,8 +36,18 @@ Route::match(['get', 'post'], 'admin/login', [
 // Registration routes...
 Route::get('admin/register', 'Admin\AuthController@register');
 
+//Facebook login Routes
 Route::get('auth/facebook', [
     'as' => 'auth.facebook',
     'uses' => 'Auth\AuthController@redirectToProvider'
 ]);
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback');
+Route::auth();
+
+//Homepage Routes
+Route::get('/home', 'HomeController@index');
+
+//Password reset Routes
+Route::get('password/reset{token}','Auth\PasswordController@showResetForm');
+Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'Auth\PasswordController@reset');

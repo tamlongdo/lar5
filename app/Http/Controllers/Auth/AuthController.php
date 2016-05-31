@@ -74,6 +74,7 @@ class AuthController extends Controller
     }
     
     
+    /** FB login **/
     protected $redirectPath = '/home';
     
     /**
