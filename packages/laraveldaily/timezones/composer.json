@@ -1,0 +1,8 @@
+{
+    "name": "laraveldaily/timezone",
+    "description": "Demo package",
+    "type": "none",
+    "license": "none",
+    "minimum-stability": "dev",
+    "require": {}
+}
